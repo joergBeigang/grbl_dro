@@ -1,0 +1,2 @@
+The spindle and feed override abilities are removed here. Otherwise the override slider of bCNC will fight collide with the 
+potentiometer controlled overrides of the pendant.
