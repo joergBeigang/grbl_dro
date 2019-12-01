@@ -1,16 +1,17 @@
-/*
-   all functions dealing with the spindle and feed 
-   overrides
-*/
+// =================================================
+// all functions dealing with the spindle and feed 
+// overrides
+// =================================================
 
 // read the analog value of the potentiometers and map them to theyr override values
-
 void overrides()
 {
   checkPoti();
   sendOverrideCmd();
 }
 
+
+// smoothing the reading to avoid sending unnecessary override commands
 float averageOfArray(int data[])
 {
   int s= sizeof(data);
@@ -31,26 +32,24 @@ void checkPoti()
   }
   int feedTmp=analogRead(feedPin);
   int spindleTmp=analogRead(spindlePin);
-//  int feedTmp = 318; 
-//  int spindleTmp = 400;
   
   // map it to some usufull values
-  // 25 to 200
+  // min and max values are defined in config.h 
   if (feedTmp < 512)
   {
-    feedInput=map(feedTmp, 0, 511, 25, 100);
+    feedInput=map(feedTmp, 0, 511, feedOvMin, 100);
   } else
   {
-    feedInput=map(feedTmp, 512, 1023, 100, 200);
+    feedInput=map(feedTmp, 512, 1023, 100, feedOvMax);
   }
 
-  // 25 to 200
+  // min and max values are defined in config.h 
   if (spindleTmp < 512)
   {
-    spindleInput=map(spindleTmp, 0, 511, 25, 100);
+    spindleInput=map(spindleTmp, 0, 511, spindleOvMin, 100);
   } else
   {
-    spindleInput=map(spindleTmp, 512, 1023, 100, 200);
+    spindleInput=map(spindleTmp, 512, 1023, 100, spindleOvMax);
   }
 
 

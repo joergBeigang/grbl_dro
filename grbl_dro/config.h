@@ -3,11 +3,14 @@
 
 
 
-/*
-   rotary encoder
-   pin definition
-*/
-// rotary encoder - those pins should have interrupt abilities
+// ==============
+// rotary encoder
+// ==============
+ 
+// pin definition
+
+// rotary encoder - these pins should have interrupt abilities
+// escpecially if the rotary encoder got a high resolution
 #define encoderApin 2
 #define encoderBpin 3
 
@@ -20,9 +23,21 @@
 // resolution
 // there are three diffrent resolution or speeds for the 
 // rotary encoder
-#define encoderResolution1 1000
-#define encoderResolution2 100
+// this values need to be adjusted depending on the resolution of the 
+// rotary encoder. these values here are working with an encoder with
+// 600 pulses per revolution
+// jog command = pulses of the rotary encoder / encoderResolution
+// for example encoderResolution1 = 2000 -> 0.002mm per pulse -> 1.2mm for a whole revolution on the encoder
+#define encoderResolution1 2000
+#define encoderResolution2 200
 #define encoderResolution3 50
+
+
+// feed rate for the jog command. this is the theoretical max speed in mm/min 
+// while jogging. in reality it will be slowed down by the acceleration
+// management of grbl
+#define jogFeedRate 4000
+
 
 // pins for the rotafy switch of the encoder resolution
 #define encoderResolutionPin1 5
@@ -32,7 +47,7 @@
 // timing for canceling jogging, when the rotary encoder stopped moving
 // that's needed for fast jogs and slow machine acceleration
 // not too low, otherwise GRBL is being hammered with cancel commands and hangs it self
-#define encoderCancelIntervall 200
+#define encoderCancelIntervall 500
 
 // max step size
 // defining the maximal step size for the jog commands. In some rare cases read errors
@@ -51,19 +66,25 @@
 
 
 
-/* 
-   potentiometer for feed and spindle overrides
-   pin goes to the center pin of the potentiometer
-   the other two pins are connected to GND and 5V
-*/
+// ===============================================
+// potentiometer for feed and spindle overrides
+// pin goes to the center pin of the potentiometer
+// the other two pins are connected to GND and 5V
+// ===============================================
+
 #define feedPin A0
 #define spindlePin A1
 // smoothing the analog read
 #define smoothSteps 10
+// define the min and max ranges of the overrides
+#define spindleOvMax 200
+#define spindleOvMin 25
+#define feedOvMax 200
+#define feedOvMin 25
 
-/*
-   7 segment 8 digit LED display
-*/
+// =============================
+// 7 segment 8 digit LED display
+// =============================
 
 // pins
 #define LED_X_DataIn 53
@@ -85,21 +106,25 @@
 // brightness of the LED display
 #define intensity 2
 
-/*
-   interval for sending "?" to GRBL
-*/
+// ================================
+// interval for sending "?" to GRBL
+// ================================
+// should not be below 200ms - hammering too fast will freeze grbl
 #define updateInterval 200
 
-/*
-   baud rate
-   the baud rate is set to a pretty low value to give 
-   the slow arduino mega enough time to to all it's calucations
-   while making sure the communication is working. 
-   It's not as bad as it sounds: 9600 baud = 1200 byte/sec
-   that's roughly 42 lines of gcode per second. For a milling 
-   machine more then enough to keep the buffer full.
-   GRBL got to be set to the same baud rate (in the config.h file)
-*/
+// ===============================================================
+// baud rate
+// the baud rate is set to a pretty low value to give 
+// the slow arduino mega enough time to to all it's calucations
+// while making sure the communication is working. 
+// It's not as bad as it sounds: 9600 baud = 1200 byte/sec
+// that's roughly 42 lines of gcode per second. For a milling 
+// machine more then enough to keep the buffer full.
+// GRBL got to be set to the same baud rate (in the config.h file)
+// worth a try if a faster board like the teensy will work in full
+// speed. this code compiles on a teensy 3.6. coudn't test it, 
+// because I don't have a teensy
+// ===============================================================
 
 #define baudRate 9600
 

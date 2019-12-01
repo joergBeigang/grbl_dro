@@ -1,3 +1,14 @@
+/*
+Copyright 2019 Joerg Beigang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+
 
 #include "LedControl.h"
 #include <Encoder.h>
@@ -34,16 +45,16 @@ int feedAry[smoothSteps];
 int spindleAry[smoothSteps];
 
 
-// status 0=Idle 1=run 2=alarm 3=error
+// status 0=Idle 1=run 2=alarm 3=error 4=jog
 int grblMode;
 
 // timing for asking GRBL for an update 
 unsigned long updatePreviousMillis = 0;    // will store last time a "?" was sent to grbl
 
 
-/*
-  Serial communication
-*/
+// ======================
+//  Serial communication
+// ======================
 // reading Serial input
 #define  SplittingArraySize 6
 int SplittingArraySizeAdd = 9;
@@ -55,9 +66,9 @@ String  grblStringRx = "";
 String outputGRBL[15]; // all values are in here
 float disp[15]; // all values in float format are in here
 
-/*
-   Setup
-*/
+// =====
+// Setup
+// =====
 
 void setup() 
 {

@@ -57,15 +57,16 @@ void readEncocder()
   setEncoderAxis();
   setEncoderResolution();
   // cancel jogging if the encoder stopped moving
-  if ((millis()- encoderPreviousMicros) > encoderCancelIntervall && cancelSent == LOW && encoderResolution<1000)
+  if ((millis()- encoderPreviousMicros) > encoderCancelIntervall && grblMode == 4 && cancelSent == LOW)
   {
 	Serial1.write(0x85);
-	cancelSent=HIGH;
+	Serial.println("cancel");
+	cancelSent = HIGH;
   }
   long newPosition = myEnc.read();
   if (newPosition != oldPosition) 
   {
-    if (grblMode!=1 && encoderAxis != "none")
+    if (grblMode!=1)
     {
 	  if ((millis() - encoderPreviousMicros) > encoderCmdIntervall)
 	  {
@@ -74,15 +75,15 @@ void readEncocder()
 		if ((dif/encoderResolution)<encoderMaxSteps)
 		{
 		  // Serial.println(dif);
-		  Serial1.println("$J=G91 "+ encoderAxis + String(dif/encoderResolution)+" F3000");
+		  if (encoderAxis != "none")
+		  {
+		    Serial1.println("$J=G91 "+ encoderAxis + String(dif/encoderResolution)+" F"+jogFeedRate);
+		    cancelSent=LOW;
+		  }
 		  oldPosition = newPosition;
-		  cancelSent=LOW;
 		}
 	  }
-	}
+    }
   }
-
-
-
 }
 

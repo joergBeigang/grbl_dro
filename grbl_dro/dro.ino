@@ -1,3 +1,6 @@
+// DRO
+
+
 
 void readSerialGRBBL()              // GRBL serial
 {
@@ -18,10 +21,8 @@ void readSerialGRBBL()              // GRBL serial
 }
 
 
-void grblStatusRx(String grblStat)
+void grblStringParse(String grblStat)
 {
-  static boolean statNew;
-  static byte statNoNew;
   
   //<Idle|MPos:-8.234,11.438,0.463|FS:0,0>
   //<Idle|MPos:-8.234,11.438,0.463|FS:0,0|WCO:-11.000,9.000,0.000>
@@ -59,7 +60,13 @@ void grblStatusRx(String grblStat)
   if(grblStat[0]=='R')
   {
     grblMode=1;
-  } else
+  }
+  else if(grblStat[0]=='J')
+  {
+    grblMode=4;
+    Serial.println("jog");
+  }
+  else
   {
    grblMode=0;
   }
@@ -93,11 +100,11 @@ void splitIt(String msg)
 
 
 // see if the string is of any use for us
-void grblRxEvaluation(String grblRx)
+void checkGrblString(String grblRx)
 {
   if (grblRx.startsWith("<"))                                 // Status GRBL
   {
-    grblStatusRx(grblRx);
+    grblStringParse(grblRx);
   }
 }
 
@@ -121,7 +128,7 @@ void dro()
   if (grblStringAvailable)
   {
     grblStringAvailable = false;
-    grblRxEvaluation(grblStringRx); // check if the string is of any use
+    checkGrblString(grblStringRx); // check if the string is of any use
 
     createFloat(); // convert everything to an float array 
 
@@ -193,7 +200,6 @@ void printOnLed(String content, int axis)
 
   for (int i=0;i<strLength;i++)
   {
-    int n=0;
     if (content[i]=='.')
     {
       dotTrue=true;
