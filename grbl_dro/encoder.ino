@@ -5,14 +5,17 @@ void setEncoderResolution()
   if (digitalRead(encoderResolutionPin1)==LOW)
   {
 	encoderResolution=encoderResolution1;
+	jogFeed=jogFeedRate1;
   }
   if (digitalRead(encoderResolutionPin2)==LOW)
   {
 	encoderResolution=encoderResolution2;
+	jogFeed=jogFeedRate2;
   }
   if (digitalRead(encoderResolutionPin3)==LOW)
   {
 	encoderResolution=encoderResolution3;
+	jogFeed=jogFeedRate3;
   }
 }
 
@@ -60,7 +63,7 @@ void readEncocder()
   if ((millis()- encoderPreviousMicros) > encoderCancelIntervall && grblMode == 4 && cancelSent == LOW)
   {
 	Serial1.write(0x85);
-	Serial.println("cancel");
+	printDebugMsg("cancel");
 	cancelSent = HIGH;
   }
   long newPosition = myEnc.read();
@@ -74,10 +77,10 @@ void readEncocder()
 		float dif = oldPosition - newPosition;
 		if ((dif/encoderResolution)<encoderMaxSteps)
 		{
-		  // Serial.println(dif);
+		  // printDebugMsg(dif);
 		  if (encoderAxis != "none")
 		  {
-		    Serial1.println("$J=G91 "+ encoderAxis + String(dif/encoderResolution)+" F"+jogFeedRate);
+		    Serial1.println("$J=G91 "+ encoderAxis + String(dif/encoderResolution)+" F"+jogFeed);
 		    cancelSent=LOW;
 		  }
 		  oldPosition = newPosition;

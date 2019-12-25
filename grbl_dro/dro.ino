@@ -64,7 +64,7 @@ void grblStringParse(String grblStat)
   else if(grblStat[0]=='J')
   {
     grblMode=4;
-    Serial.println("jog");
+    printDebugMsg("jog");
   }
   else
   {
@@ -148,7 +148,7 @@ void dro()
     */
     
     // update the feed and speed overrides
-    if (updateOverride == HIGH)
+    if (updateOverride == HIGH && feedSpindleOvEnable == 1)
     {
       feedOverride =  int(disp[6]);
       spindleOverride = int(disp[8]);
@@ -190,8 +190,8 @@ void printOnLed(String content, int axis)
 
   // get the length of the string
   int strLength = content.length();
-  // Serial.println("length_");
-  // Serial.print(strLength);
+  // printDebugMsg("length_");
+  // printDebugMsg(strLength);
 
   
   // check if there is a dot in the string

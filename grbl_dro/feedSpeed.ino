@@ -14,7 +14,7 @@ void overrides()
 // smoothing the reading to avoid sending unnecessary override commands
 float averageOfArray(int data[])
 {
-  int s= sizeof(data);
+  int s = sizeof(data);
   int total=0;
   for (int i=0; i< s; i++)
   {
@@ -42,6 +42,7 @@ void checkPoti()
   {
     feedInput=map(feedTmp, 512, 1023, 100, feedOvMax);
   }
+  // feedInput =feedInput+feedOffset;
 
   // min and max values are defined in config.h 
   if (spindleTmp < 512)
@@ -51,6 +52,7 @@ void checkPoti()
   {
     spindleInput=map(spindleTmp, 512, 1023, 100, spindleOvMax);
   }
+  // spindleInput=spindleInput+spindleOffset;
 
 
   feedAry[stepsCount]=feedInput;
@@ -102,7 +104,8 @@ void sendOverrideCmd()
 {
   int val;
   // feed override
-  if (feedDifference > 2 || feedDifference < -2)
+  if (feedDifference > 1 || feedDifference < -1)
+  // if (feedDifference != 0)
   {
     val = adjustOverride(feedDifference);
     switch(val)
@@ -130,7 +133,8 @@ void sendOverrideCmd()
     }
   }
   // spindle override
-  if (spindleDifference > 2 || spindleDifference < -2)
+  if (spindleDifference > 1 || spindleDifference < -1)
+  // if (spindleDifference != 0)
   {
     val = adjustOverride(spindleDifference);
     switch(val)

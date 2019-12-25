@@ -30,7 +30,7 @@ int encoderResolution = 1000;
 unsigned long encoderPreviousMicros = 0; // for the timer to cancel jogging when the encoder knop stopped moving
 unsigned long encoderPreviousCmdMills = 0; // for the timer to cancel jogging when the encoder knop stopped moving
 bool cancelSent = HIGH;
-
+unsigned long jogFeed;
 
 // feed and spindle overrides 
 int feedOverride ;
@@ -98,7 +98,11 @@ void setup()
 
 void loop()
 {
-  readEncocder();
+  
+  if (enableEncoder==1)
+  {
+    readEncocder();
+  }    
   // pipe through the serial communication in one direction
   if (Serial.available()) 
   {     // If anything comes in Serial1 (pins 0 & 1)
@@ -119,3 +123,12 @@ void loop()
   }
 
 } // end loop
+
+
+void printDebugMsg(String msg)
+{
+  if (debugEnable == 1)
+  {
+    Serial.println(msg);
+  }
+}

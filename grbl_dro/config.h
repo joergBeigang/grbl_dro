@@ -6,6 +6,10 @@
 // ==============
 // rotary encoder
 // ==============
+
+
+// enable encoder reading
+#define enableEncoder 1
  
 // pin definition
 
@@ -36,7 +40,9 @@
 // feed rate for the jog command. this is the theoretical max speed in mm/min 
 // while jogging. in reality it will be slowed down by the acceleration
 // management of grbl
-#define jogFeedRate 4000
+#define jogFeedRate1 150
+#define jogFeedRate2 1200
+#define jogFeedRate3 4000
 
 
 // pins for the rotafy switch of the encoder resolution
@@ -71,6 +77,19 @@
 // pin goes to the center pin of the potentiometer
 // the other two pins are connected to GND and 5V
 // ===============================================
+
+// offset values
+// because potentiometers are analog devices there might be the need for some 
+// calibration especially for potentiometers that snap on the center position
+// with this values you can make sure the center position of the potentiometer
+// equals 100
+//
+
+// enable or disable the potentiometer reading
+#define feedSpindleOvEnable 1
+
+#define feedOffset 1
+#define spindleOffset 2
 
 #define feedPin A0
 #define spindlePin A1
@@ -128,4 +147,8 @@
 
 #define baudRate 9600
 
+// =====================
+// enable debug messages
+// =====================
 
+#define debugEnable 0
